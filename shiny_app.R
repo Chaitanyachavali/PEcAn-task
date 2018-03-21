@@ -72,10 +72,10 @@ ui=fluidPage(
 server=function(input, output) {
   # Tab 1 processings
   # Extracting selected country data from whole data
-  extract_data = isolate(subset(countries_data,countries_data$Country==input$tab1_countries))
+  tab1_extract_data = isolate(subset(countries_data,countries_data$Country==input$tab1_countries))
   # We only need two columns from it
-  date = extract_data$dt
-  avg_temperature = extract_data$AverageTemperature
+  date = tab1_extract_data$dt
+  avg_temperature = tab1_extract_data$AverageTemperature
   data_frame <- data.frame(date,avg_temperature)
   # Custom font to display neatly
   custom_font <- list(
@@ -97,9 +97,17 @@ server=function(input, output) {
       layout(title =input$tab1_countries, xaxis = x, yaxis = y, margin = 220)
   })
   
-  #Tab 2 processings
+  # Tab 2 processings
+  # Extract 2 countries data
+ 
+  
+  # Tab 3 Processings
+  tab3_extract_data = isolate(subset(countries_data,countries_data$Country==input$tab3_countries))
+  output$tab3_plot_area <- renderPlotly({
+    plot_ly(y = ~tab3_extract_data$AverageTemperature)
+  })
   
 }
 
-# Run Shin
+# Get going 
 shinyApp(ui = ui, server = server)
