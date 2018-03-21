@@ -22,29 +22,55 @@ countries=unique(countries_data$Country)
 # Coming on to shiny UI
 # Use a fluid Bootstrap layout
 ui=fluidPage(    
-  # Setting Page title
+  # Give the page a title
   titlePanel("Temperature Visualizations"),
-  # Generate a row with a sidebar
-  sidebarLayout(      
-    # Define the sidebar with one input
-    sidebarPanel(
-      # Dropdown with all countries
-      selectInput("tab1_countries", "Countries:", 
-                  choices=countries),
-      hr(),
-      helpText("Please select a country from the dropdown.")
+  # Creating Tabs
+  tabsetPanel(
+    # Tab 1
+    tabPanel(
+      title = "By Country (Line Chart)",
+      # Dropdown of countries
+      sidebarLayout(sidebarPanel(selectInput("tab1_countries", "Countries:", 
+                                             choices=countries),
+                                 hr(),
+                                 helpText("Please select a country from the dropdown.")),
+                    mainPanel(
+                      # Chart Area
+                      plotlyOutput("tab1_plot_area")  
+                    ))
     ),
-    # Create a space for the line plot
-    mainPanel(
-      plotlyOutput("plot_area")  
-    )
+    # Tab 2
+    tabPanel(
+      title = "Two countries (Scatter Plot)",
+      sidebarPanel(
+        selectInput("tab2_countryA", "Countries A:", 
+                    choices=countries),
+        selectInput("tab2_countryB", "Countries B:", 
+                    choices=countries),
+        hr(),
+        helpText("Please select two countries from the dropdown")),
+      mainPanel(
+        plotlyOutput("tab2_plot_area")  
+      )),
+    # Tab 3
+    tabPanel(
+      title = "Average Temperature (Bar Chart)",
+      sidebarLayout(sidebarPanel(selectInput("tab3_countries", "Countries:", 
+                                             choices=countries),
+                                 hr(),
+                                 helpText("Please select a country from the dropdown.")),
+                    mainPanel(
+                      plotlyOutput("tab3_plot_area") 
+                    )))
     
   )
 )
 
+
 # Coming on to Shiny Backend
 # Define a server for the Shiny app
 server=function(input, output) {
+  # Tab 1 processings
   # Extracting selected country data from whole data
   extract_data = isolate(subset(countries_data,countries_data$Country==input$tab1_countries))
   # We only need two columns from it
@@ -66,10 +92,13 @@ server=function(input, output) {
     titlefont = custom_font
   )
   # Filling the space with plot using plotly
-  output$plot_area <- renderPlotly({
+  output$tab1_plot_area <- renderPlotly({
     plot_ly(data_frame, x = ~date, y = ~avg_temperature, type = 'scatter', mode = 'lines')%>%
       layout(title =input$tab1_countries, xaxis = x, yaxis = y, margin = 220)
   })
+  
+  #Tab 2 processings
+  
 }
 
 # Run Shin
