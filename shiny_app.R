@@ -23,13 +23,13 @@ countries=unique(countries_data$Country)
 # Use a fluid Bootstrap layout
 ui=fluidPage(    
   # Setting Page title
-  titlePanel("Temperature By Country"),
+  titlePanel("Temperature Visualizations"),
   # Generate a row with a sidebar
   sidebarLayout(      
     # Define the sidebar with one input
     sidebarPanel(
       # Dropdown with all countries
-      selectInput("countries", "Countries:", 
+      selectInput("tab1_countries", "Countries:", 
                   choices=countries),
       hr(),
       helpText("Please select a country from the dropdown.")
@@ -46,7 +46,7 @@ ui=fluidPage(
 # Define a server for the Shiny app
 server=function(input, output) {
   # Extracting selected country data from whole data
-  extract_data = isolate(subset(countries_data,countries_data$Country==input$countries))
+  extract_data = isolate(subset(countries_data,countries_data$Country==input$tab1_countries))
   # We only need two columns from it
   date = extract_data$dt
   avg_temperature = extract_data$AverageTemperature
@@ -58,17 +58,17 @@ server=function(input, output) {
     color = "#7f7f7f"
   )
   x <- list(
-    title = "x Axis",
-    titlefont = custom_font
+    titlefont = custom_font,
+    tickangle = 90
   )
   y <- list(
-    title = "y Axis",
+    title = "Average Temperature",
     titlefont = custom_font
   )
   # Filling the space with plot using plotly
   output$plot_area <- renderPlotly({
     plot_ly(data_frame, x = ~date, y = ~avg_temperature, type = 'scatter', mode = 'lines')%>%
-      layout(title =input$countries, xaxis = x, yaxis = y)
+      layout(title =input$tab1_countries, xaxis = x, yaxis = y, margin = 220)
   })
 }
 
