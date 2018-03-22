@@ -19,10 +19,10 @@
   * Copy the url and open it in a web browser.
   
 ## Info about files
-* `main.R` is a shiny application which satisfies all minimum requirements mentioned in the task. Features covered in `main.R` are listed below
+* `main.R` is a shiny application which satisfies all minimum requirements mentioned in the task. Features/functionalities covered in `main.R` are listed below
   * A line plot of temperate by country, selecting the country from a drop-down menu [Tab 1]
   * A bivariate scatter plot of temperatures for two different countries, selected from a drop-down menu by the user [Tab 2]
   * A bar chart of average temperature by country, averaged across the entire time series [Tab 3]
   * Ability to zoom in/out of the plot
-  * More generally, ability to interact directly with the plot with a mouse 
-  * Visualization technologies used [Plotly](https://plot.ly/)
+  * Ability to interact directly with the plot with a mouse 
+  * Visualization technologies used - [Plotly](https://plot.ly/)
