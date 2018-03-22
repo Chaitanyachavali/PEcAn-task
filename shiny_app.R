@@ -75,12 +75,6 @@ ui=fluidPage(
 # Define a server for the Shiny app
 server=function(input, output) {
   # Tab 1 processings
-  # Extracting selected country data from whole data
-  tab1_extract_data = isolate(subset(countries_data,countries_data$Country==input$tab1_countries))
-  # We only need two columns from it
-  date = tab1_extract_data$dt
-  avg_temperature = tab1_extract_data$AverageTemperature
-  data_frame <- data.frame(date,avg_temperature)
   # Custom font to display neatly
   custom_font <- list(
     family = "Courier New, monospace",
@@ -97,30 +91,34 @@ server=function(input, output) {
   )
   # Filling the space with plot using plotly
   output$tab1_plot_area <- renderPlotly({
+    # Extracting selected country data from whole data
+    tab1_extract_data = isolate(subset(countries_data,countries_data$Country==input$tab1_countries))
+    # We only need two columns from it
+    date = tab1_extract_data$dt
+    avg_temperature = tab1_extract_data$AverageTemperature
+    data_frame <- data.frame(date,avg_temperature)
     plot_ly(data_frame, x = ~date, y = ~avg_temperature, type = 'scatter', mode = 'lines')%>%
       layout(title =input$tab1_countries, xaxis = x, yaxis = y, margin = 220)
   })
   
   # Tab 2 processings
   # Extract 2 countries data
-  tab2_extract_data_countryA <- reactive({ isolate(subset(countries_data,countries_data$Country==input$tab2_countryA)) })
-  tab2_extract_data_countryB <- reactive({ isolate(subset(countries_data,countries_data$Country==input$tab2_countryB)) })
-  tab2_extract_data <- reactive({
-    isolate(merge(tab2_extract_data_countryA() , tab2_extract_data_countryB() , all=TRUE))
-  })
   layout_title <- reactive({
     paste(input$tab2_countryA, input$tab2_countryB, sep = " and ")
   })
   output$tab2_plot_area <- renderPlotly({
-    plot_ly(data = tab2_extract_data(), x = ~dt, y = ~AverageTemperature, color = ~Country, type="scatter", colors = "Set2")%>%
+    tab2_extract_data_countryA <- isolate(subset(countries_data,countries_data$Country==input$tab2_countryA))
+    tab2_extract_data_countryB <- isolate(subset(countries_data,countries_data$Country==input$tab2_countryB))
+    tab2_extract_data <- isolate(merge(tab2_extract_data_countryA , tab2_extract_data_countryB , all=TRUE))
+    plot_ly(data = tab2_extract_data, x = ~dt, y = ~AverageTemperature, color = ~Country, type="scatter", colors = "Set2")%>%
       layout(title = layout_title(), xaxis = x, yaxis = y, margin = 220)
   })
   
   # Tab 3 Processings
-  tab3_extract_data = isolate(subset(countries_data,countries_data$Country==input$tab3_countries))
   output$tab3_plot_area <- renderPlotly({
+    tab3_extract_data = isolate(subset(countries_data,countries_data$Country==input$tab3_countries))
     plot_ly(y = ~tab3_extract_data$AverageTemperature, type="bar")%>%
-      layout(title = input$tab3_countries, margin = 220)
+      layout(title = input$tab3_countries, yaxis = y, margin = 220)
   })
   
 }
