@@ -31,7 +31,8 @@ ui=fluidPage(
       title = "By Country (Line Chart)",
       # Dropdown of countries
       sidebarLayout(sidebarPanel(selectInput("tab1_countries", "Countries:", 
-                                             choices=countries),
+                                             choices=countries,
+                                             selected = "India"),
                                  hr(),
                                  helpText("Please select a country from the dropdown.")),
                     mainPanel(
@@ -44,19 +45,22 @@ ui=fluidPage(
       title = "Two countries (Scatter Plot)",
       sidebarPanel(
         selectInput("tab2_countryA", "Countries A:", 
-                    choices=countries),
+                    choices=countries,
+                    selected = "India"),
         selectInput("tab2_countryB", "Countries B:", 
-                    choices=countries),
+                    choices=countries,
+                    selected = "Africa"),
         hr(),
         helpText("Please select two countries from the dropdown")),
       mainPanel(
-        plotlyOutput("tab2_plot_area")  
+        plotlyOutput("tab2_plot_area")
       )),
     # Tab 3
     tabPanel(
       title = "Average Temperature (Bar Chart)",
       sidebarLayout(sidebarPanel(selectInput("tab3_countries", "Countries:", 
-                                             choices=countries),
+                                             choices=countries,
+                                             selected = "India"),
                                  hr(),
                                  helpText("Please select a country from the dropdown.")),
                     mainPanel(
@@ -99,18 +103,24 @@ server=function(input, output) {
   
   # Tab 2 processings
   # Extract 2 countries data
-  tab2_extract_data_countryA = isolate(subset(countries_data,countries_data$Country==input$tab2_countryA))
-  tab2_extract_data_countryB = isolate(subset(countries_data,countries_data$Country==input$tab2_countryB))
-  tab2_extract_data_raw = isolate(merge(tab2_extract_data_countryA, tab2_extract_data_countryB, all=TRUE))
-  output$tab2_plot_area <- reactive({renderPlotly({
-    plot_ly(data = tab2_extract_data, x = ~dt, y = ~AverageTemperature, color = ~Country, type="scatter")%>%
-      layout(title = "Scatter plot", xaxis = x, yaxis = y, margin = 220)
-  })})
+  tab2_extract_data_countryA <- reactive({ isolate(subset(countries_data,countries_data$Country==input$tab2_countryA)) })
+  tab2_extract_data_countryB <- reactive({ isolate(subset(countries_data,countries_data$Country==input$tab2_countryB)) })
+  tab2_extract_data <- reactive({
+    isolate(merge(tab2_extract_data_countryA() , tab2_extract_data_countryB() , all=TRUE))
+  })
+  layout_title <- reactive({
+    paste(input$tab2_countryA, input$tab2_countryB, sep = " and ")
+  })
+  output$tab2_plot_area <- renderPlotly({
+    plot_ly(data = tab2_extract_data(), x = ~dt, y = ~AverageTemperature, color = ~Country, type="scatter", colors = "Set2")%>%
+      layout(title = layout_title(), xaxis = x, yaxis = y, margin = 220)
+  })
   
   # Tab 3 Processings
   tab3_extract_data = isolate(subset(countries_data,countries_data$Country==input$tab3_countries))
   output$tab3_plot_area <- renderPlotly({
-    plot_ly(y = ~tab3_extract_data$AverageTemperature)
+    plot_ly(y = ~tab3_extract_data$AverageTemperature, type="bar")%>%
+      layout(title = input$tab3_countries, margin = 220)
   })
   
 }
