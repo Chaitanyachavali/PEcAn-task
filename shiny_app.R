@@ -99,7 +99,13 @@ server=function(input, output) {
   
   # Tab 2 processings
   # Extract 2 countries data
- 
+  tab2_extract_data_countryA = isolate(subset(countries_data,countries_data$Country==input$tab2_countryA))
+  tab2_extract_data_countryB = isolate(subset(countries_data,countries_data$Country==input$tab2_countryB))
+  tab2_extract_data_raw = isolate(merge(tab2_extract_data_countryA, tab2_extract_data_countryB, all=TRUE))
+  output$tab2_plot_area <- reactive({renderPlotly({
+    plot_ly(data = tab2_extract_data, x = ~dt, y = ~AverageTemperature, color = ~Country, type="scatter")%>%
+      layout(title = "Scatter plot", xaxis = x, yaxis = y, margin = 220)
+  })})
   
   # Tab 3 Processings
   tab3_extract_data = isolate(subset(countries_data,countries_data$Country==input$tab3_countries))
