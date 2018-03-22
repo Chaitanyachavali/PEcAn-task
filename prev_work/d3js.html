@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Histogram | d3JS | Chaitanya</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  </head>
+  <body style="padding: 10px 80px;">
+    <h3>Distributions Visualization</h3><br>
+
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#sample" role="tab">Sample</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#normal" role="tab">Normal Distribution</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#uniform" role="tab">Uniform Distribution</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#expo" role="tab">Exponential Distribution</a>
+    </li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="sample" role="tabpanel">
+      <div class="container">
+      <div class="row">
+        <div class="col-sm-4">
+          <br>
+          <h5>Options</h5>
+          <hr>
+          <div class="form-group">
+            <label for="observations">Observations</label>
+            <input type="text" class="form-control allowIntegerDecimal" id="sampleObservations" placeholder="Eg: 2000">
+            <small class="form-text text-muted">Enter the number of observations needed</small>
+          </div>
+          <div class="form-group">
+            <label for="observations">Number of Bars (Optional)</label>
+            <input type="text" class="form-control allowIntegerDecimal" id="sampleBars" placeholder="Eg: 10">
+            <small class="form-text text-muted">Enter the number of bars of graph needed</small>
+          </div>
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="radio" class="form-check-input" name="optionsRadios" id="option1" value="withReplacement" checked>
+              With Replacement
+            </label>
+          </div>
+          <div class="form-check">
+          <label class="form-check-label">
+              <input type="radio" class="form-check-input" name="optionsRadios" id="option2" value="withOutReplacement">
+              Without Replacement
+            </label>
+          </div>
+          <br>
+          <button type="button" class="btn btn-primary" id="sampleBtn">Checkout Graph</button>
+        </div>
+        <div class="col-sm-8" id="sampleHistogramDiv"><center class="hideOnLoad" id="showSample"><i>Output - Histogram</i></center><br></div>
+      </div>
+    </div>
+    </div>
+    <div class="tab-pane" id="normal" role="tabpanel">
+      <div class="container">
+      <div class="row">
+        <div class="col-sm-4">
+          <br>
+          <h5>Options</h5>
+          <hr>
+          <div class="form-group">
+            <label for="observations">Observations</label>
+            <input type="text" class="form-control allowIntegerDecimal" id="normalObservations" placeholder="Eg: 2000">
+            <small class="form-text text-muted">Enter the number of observations needed</small>
+          </div>
+          <div class="form-group">
+            <label for="observations">Mean (µ)</label>
+            <input type="text" class="form-control allowIntegerDecimal" id="normalMean" placeholder="Eg: 50">
+            <small class="form-text text-muted">Enter mean for the observations</small>
+          </div>
+          <div class="form-group">
+            <label for="observations">Standard Deviation (σ)</label>
+            <input type="text" class="form-control allowIntegerDecimal" id="normalStandardDeviation" placeholder="Eg: 20">
+            <small class="form-text text-muted">Enter standard deviation for the observations</small>
+          </div>
+          <div class="form-group">
+            <label for="observations">Number of Bars (Optional)</label>
+            <input type="text" class="form-control allowIntegerDecimal" id="normalBars" placeholder="Eg: 10">
+            <small class="form-text text-muted">Enter the number of bars of graph needed</small>
+          </div>
+          <button type="button" class="btn btn-primary" id="normalBtn">Checkout Graph</button>
+        </div>
+        <div class="col-sm-8" id="normalHistogramDiv"><center class="hideOnLoad" id="showNormal"><i>Output - Histogram</i></center><br></div>
+      </div>
+    </div>
+    </div>
+    <div class="tab-pane" id="uniform" role="tabpanel">
+      <div class="container">
+      <div class="row">
+        <div class="col-sm-4">
+          <br>
+          <h5>Options</h5>
+          <hr>
+          <div class="form-group">
+            <label for="observations">Observations</label>
+            <input type="text" class="form-control allowIntegerDecimal" id="uniformObservations" placeholder="Eg: 2000">
+            <small class="form-text text-muted">Enter the number of observations needed</small>
+          </div>
+          <div class="form-group">
+            <label for="observations">Minimum</label>
+            <input type="text" class="form-control allowIntegerDecimal" id="uniformMinimum" placeholder="Eg: 0">
+            <small class="form-text text-muted">Enter the minimum of observations</small>
+          </div>
+          <div class="form-group">
+            <label for="observations">Maximum</label>
+            <input type="text" class="form-control allowIntegerDecimal" id="uniformMaximum" placeholder="Eg: 1000">
+            <small class="form-text text-muted">Enter the maximum of observations</small>
+          </div>
+          <div class="form-group">
+            <label for="observations">Number of Bars (Optional)</label>
+            <input type="text" class="form-control allowIntegerDecimal" id="uniformBars" placeholder="Eg: 10">
+            <small class="form-text text-muted">Enter the number of bars of graph needed</small>
+          </div>
+          <button type="button" class="btn btn-primary" id="uniformBtn">Checkout Graph</button>
+        </div>
+        <div class="col-sm-8" id="uniformHistogramDiv"><center class="hideOnLoad" id="showUniform"><i>Output - Histogram</i></center><br></div>
+      </div>
+    </div>
+    </div>
+    <div class="tab-pane" id="expo" role="tabpanel">
+      <div class="container">
+      <div class="row">
+        <div class="col-sm-4">
+          <br>
+          <h5>Options</h5>
+          <hr>
+          <div class="form-group">
+            <label for="observations">Observations</label>
+            <input type="text" class="form-control allowIntegerDecimal" id="exponentialObservations" placeholder="Eg: 2000">
+            <small class="form-text text-muted">Enter the number of observations needed</small>
+          </div>
+          <div class="form-group">
+            <label for="observations">Rate (λ)</label>
+            <input type="text" class="form-control allowIntegerDecimal" id="exponentialrate" placeholder="Eg: 0.02">
+            <small class="form-text text-muted">Enter the rate of observations</small>
+          </div>
+          <div class="form-group">
+            <label for="observations">Number of Bars (Optional)</label>
+            <input type="text" class="form-control allowIntegerDecimal" id="exponentialBars" placeholder="Eg: 10">
+            <small class="form-text text-muted">Enter the number of bars of graph needed</small>
+          </div>
+          <button type="button" class="btn btn-primary" id="exponentialBtn">Checkout Graph</button>
+        </div>
+        <div class="col-sm-8" id="exponentialHistogramDiv"><center class="hideOnLoad" id="showExponential"><i>Output - Histogram</i></center><br></div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <footer class="bg-faded mt-4">
+      <div class="container-fluid py-3">
+          <div class="row">
+              <div class="col-md-6"><span class="small"><br>Content designed and developed by <strong> Chaitanya Reddy</strong></span></div>
+              <div class="col-md-3"></div>
+              <div class="col-md-3 text-right small align-self-end">©chaitanyachavali</div>
+          </div>
+      </div>
+  </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js'></script>
+    <script type="text/javascript">
+      jQuery(document).ready(function($) {
+        $(".hideOnLoad").hide();
+          $('#sampleBtn').click(function() {
+              var obv = $('#sampleObservations').val();
+              var barsNum = $('#sampleBars').val();
+              var userInput = document.getElementsByName('optionsRadios');
+              for (var i = 0, length = userInput.length; i < length; i++) {
+                  if (userInput[i].checked) {
+                      var radioValue = userInput[i].value;
+                      break;
+                  }
+              }
+              if (radioValue === 'withReplacement') {
+                  var formURL = 'http://127.0.0.1:8000/sampleGetOpt?observations=' + obv;
+              }
+              if (radioValue === 'withOutReplacement') {
+                  var formURL = 'http://127.0.0.1:8000/sampleNoReplaceGetOpt?observations=' + obv;
+              }
+              $.ajax({
+                  type: 'GET',
+                  url: formURL,
+                  datatype: 'html',
+                  cache: 'false',
+                  success: function(response) {
+                      console.log(response);
+                      $("#showSample").show();
+                      drawHistogram(response, "sampleHistogramDiv", barsNum);
+                  },
+                  error: function(response) {
+                      console.log(response);
+                  }
+              });
+          });
+
+          $('#normalBtn').click(function() {
+              var obv = $('#normalObservations').val();
+              var mean = $('#normalMean').val();
+              var sd = $('#normalStandardDeviation').val();
+              var barsNum = $('#normalBars').val();
+              var formURL = 'http://127.0.0.1:8000/normalGetOpt?observations=' + obv + '&mean=' + mean + '&standardDeviation=' + sd;
+              console.log(formURL);
+              $.ajax({
+                  type: 'GET',
+                  url: formURL,
+                  datatype: 'html',
+                  cache: 'false',
+                  success: function(response) {
+                      console.log(response);
+                      $("#showNormal").show();
+                      drawHistogram(response, "normalHistogramDiv", barsNum);
+                  },
+                  error: function(response) {
+                      console.log(response);
+                  }
+              });
+          });
+
+          $('#uniformBtn').click(function() {
+              var obv = $('#uniformObservations').val();
+              var min = $('#uniformMinimum').val();
+              var max = $('#uniformMaximum').val();
+              var barsNum = $('#uniformBars').val();
+              var formURL = 'http://127.0.0.1:8000/uniformGetOpt?observations=' + obv + '&minimum=' + min + '&maximum=' + max;
+              console.log(formURL);
+              $.ajax({
+                  type: 'GET',
+                  url: formURL,
+                  datatype: 'html',
+                  cache: 'false',
+                  success: function(response) {
+                      console.log(response);
+                      $("#showUniform").show();
+                      drawHistogram(response, "uniformHistogramDiv", barsNum);
+                  },
+                  error: function(response) {
+                      console.log(response);
+                  }
+              });
+          });
+
+          $('#exponentialBtn').click(function() {
+              var obv = $('#exponentialObservations').val();
+              var rate = $('#exponentialrate').val();
+              var barsNum = $('#exponentialBars').val();
+              var formURL = 'http://127.0.0.1:8000/exponentialGetOpt?observations=' + obv + '&rate=' + rate;
+              console.log(formURL);
+              $.ajax({
+                  type: 'GET',
+                  url: formURL,
+                  datatype: 'html',
+                  cache: 'false',
+                  success: function(response) {
+                      console.log(response);
+                      $("#showExponential").show();
+                      drawHistogram(response, "exponentialHistogramDiv", barsNum);
+                  },
+                  error: function(response) {
+                      console.log(response);
+                  }
+              });
+          });
+
+          function drawHistogram(values, divId, barsNum) {
+              d3.selectAll("svg").remove();
+
+              var Min = 0; //Range on the x axis of histogram
+              var Max = 100;
+
+              var formatCount = d3.format(",.0f");
+              var margin = {
+                      top: 5,
+                      right: 20,
+                      bottom: 50,
+                      left: 60
+                  },
+                  width = 800 - margin.left - margin.right,
+                  height = 400 - margin.top - margin.bottom;
+
+              var x = d3.scale.linear()
+                  .domain([0, Max])
+                  .range([0, width]);
+
+              if(barsNum === '')
+              {
+                var temp = Math.ceil(3.322*Math.log(values.length));
+                var bars = 1 + temp;
+              }
+              else
+              {
+                var bars = barsNum;
+              }
+              var data = d3.layout.histogram()
+                  .bins(x.ticks(bars))
+                  (values);
+              var y = d3.scale.linear()
+                  .domain([0, d3.max(data, function(d) {
+                      return d.y;
+                  })])
+                  .range([height, 0]);
+              var xAxis = d3.svg.axis()
+                  .scale(x)
+                  .orient("bottom");
+              var yAxis = d3.svg.axis()
+                  .scale(y)
+                  .ticks(10)
+                  .orient("left");
+              var formDisplayId = "#" + divId;
+              var svg = d3.select(formDisplayId).append("svg")
+                  .attr("width", width + margin.left + margin.right)
+                  .attr("height", height + margin.top + margin.bottom)
+                  .append("g")
+                  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+              var bar = svg.selectAll(".bar")
+                  .data(data)
+                  .enter().append("g")
+                  .attr("class", "bar")
+                  .attr("transform", function(d) {
+                      return "translate(" + x(d.x) + "," + y(d.y) + ")";
+                  });
+
+              bar.append("rect")
+                  .attr("x", 1)
+                  .attr("fill", "#4682b4")
+                  .attr("width", x(data[0].dx) - 1)
+                  .attr("height", function(d) {
+                      return height - y(d.y);
+                  })
+                  .on("mouseover", function() {
+                      d3.select(this)
+                          .attr("fill", "orange");
+                  })
+                  .on("mouseout", function(d) {
+                      d3.select(this)
+                          .transition()
+                          .duration(1000)
+                          .attr("fill", "rgb(70,130,180," + (d * 0.1) + ")");
+                  });
+              bar.append("text")
+                  .attr("dy", ".75em")
+                  .attr("y", 6)
+                  .attr("x", x(data[0].dx) / 2)
+                  .attr("text-anchor", "middle")
+                  .text(function(d) {
+                      if (d.y !== 0) {
+                          return formatCount(d.y);
+                      }
+                  });
+
+              // x- axis labels
+              svg.append("g")
+                  .attr("class", "x axis")
+                  .attr("transform", "translate(0," + height + ")")
+                  .call(xAxis);
+              svg.append("text")
+                  .attr("class", "xlabel")
+                  .attr("text-anchor", "middle")
+                  .attr("x", width / 2)
+                  .attr("y", height + margin.bottom - 10)
+                  .text("Range");
+
+              // y -axis labels
+              // add the y axis and y-label
+              svg.append("g")
+                  .attr("class", "y axis")
+                  .attr("transform", "translate(0,0)")
+                  .call(yAxis);
+              svg.append("text")
+                  .attr("class", "ylabel")
+                  .attr("y", 0 - margin.left + 10) // x and y switched due to rotation
+                  .attr("x", 0 - (height / 2))
+                  .attr("dy", "1em")
+                  .attr("transform", "rotate(-90)")
+                  .style("text-anchor", "middle")
+                  .text("# values");
+
+              svg.selectAll('.axis line, .axis path')
+                  .style({
+                      'stroke': '#191919',
+                      'fill': 'none',
+                      'stroke-width': '2px'
+                  });
+          }
+      });
+  </script>
+    <script>
+    //Allow only integers and decimals in inputs
+        $(document).ready(function() {
+            $('.allowIntegerDecimal').keypress(function (event) {
+                return isNumber(event, this)
+            });
+        });
+        function isNumber(evt, element) {
+
+            var charCode = (evt.which) ? evt.which : event.keyCode
+
+            if (
+                (charCode != 45 || $(element).val().indexOf('-') != -1) &&   
+                (charCode != 46 || $(element).val().indexOf('.') != -1) &&
+                (charCode < 48 || charCode > 57))
+                return false;
+
+            return true;
+        }    
+    </script>
+
+  </body>
+</html>
