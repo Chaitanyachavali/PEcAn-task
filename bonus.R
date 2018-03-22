@@ -33,8 +33,8 @@ ui <- fluidPage(
       sidebarLayout(
         sidebarPanel(
           selectInput("tab1_countries", "Countries:",
-                      choices = countries,
-                      selected = "India"
+            choices = countries,
+            selected = "India"
           ),
           hr(),
           helpText("Please select a country from the dropdown.")
@@ -50,12 +50,12 @@ ui <- fluidPage(
       title = "Two countries (Scatter Plot)",
       sidebarPanel(
         selectInput("tab2_countryA", "Countries A:",
-                    choices = countries,
-                    selected = "India"
+          choices = countries,
+          selected = "India"
         ),
         selectInput("tab2_countryB", "Countries B:",
-                    choices = countries,
-                    selected = "Africa"
+          choices = countries,
+          selected = "Africa"
         ),
         hr(),
         helpText("Please select two countries from the dropdown")
@@ -70,8 +70,8 @@ ui <- fluidPage(
       sidebarLayout(
         sidebarPanel(
           selectInput("tab3_countries", "Countries:",
-                      choices = countries,
-                      selected = "India"
+            choices = countries,
+            selected = "India"
           ),
           hr(),
           helpText("Please select a country from the dropdown.")
@@ -101,7 +101,7 @@ server <- function(input, output) {
     tickangle = 50
   )
   y <- list(
-    title = "Average Temperature",
+    title = "Temperature",
     titlefont = custom_font
   )
   x_bar <- list(
@@ -116,11 +116,14 @@ server <- function(input, output) {
     # We only need two columns from it
     date <- tab1_extract_data$dt
     avg_temperature <- tab1_extract_data$AverageTemperature
+    uncert_temperature <- tab1_extract_data$AverageTemperatureUncertainty
     data_frame <- data.frame(date, avg_temperature)
-    plot_ly(data_frame, x = ~ date, y = ~ avg_temperature, type = "scatter", mode = "lines") %>%
+    data_frame_uncert <- data.frame(date, uncert_temperature)
+    plot_ly(data_frame, x = ~ date, y = ~ avg_temperature, name = "Temperature", type = "scatter", mode = "lines") %>%
+      add_trace(data_frame_uncert, x = ~ date, y = ~ uncert_temperature, name = "Temperature Uncertainty", type = "scatter", mode = "lines") %>%
       layout(title = input$tab1_countries, xaxis = x, yaxis = y, margin = 220)
   })
-  
+
   # Tab 2 processings
   # Extract 2 countries data
   layout_title <- reactive({
@@ -130,10 +133,21 @@ server <- function(input, output) {
     tab2_extract_data_countryA <- isolate(subset(countries_data, countries_data$Country == input$tab2_countryA))
     tab2_extract_data_countryB <- isolate(subset(countries_data, countries_data$Country == input$tab2_countryB))
     tab2_extract_data <- isolate(merge(tab2_extract_data_countryA, tab2_extract_data_countryB, all = TRUE))
-    plot_ly(data = tab2_extract_data, x = ~ dt, y = ~ AverageTemperature, color = ~ Country, type = "scatter", colors = "Set2") %>%
+    plot_ly(data.frame(tab2_extract_data_countryA$dt, tab2_extract_data_countryA$AverageTemperature), x = ~ tab2_extract_data_countryA$dt, y = ~ tab2_extract_data_countryA$AverageTemperature, name = reactive({
+      paste(input$tab2_countryA, "Temperature", sep = " - ")
+    })(), type = "scatter") %>%
+      add_trace(data.frame(tab2_extract_data_countryB$dt, tab2_extract_data_countryB$AverageTemperature), x = ~ tab2_extract_data_countryB$dt, y = ~ tab2_extract_data_countryB$AverageTemperature, name = reactive({
+        paste(input$tab2_countryB, "Temperature", sep = " - ")
+      })(), type = "scatter") %>%
+      add_trace(data.frame(tab2_extract_data_countryA$dt, tab2_extract_data_countryA$AverageTemperatureUncertainty), x = ~ tab2_extract_data_countryA$dt, y = ~ tab2_extract_data_countryA$AverageTemperatureUncertainty, name = reactive({
+        paste(input$tab2_countryA, "Temperature Uncertainity", sep = " - ")
+      })(), type = "scatter") %>%
+      add_trace(data.frame(tab2_extract_data_countryB$dt, tab2_extract_data_countryB$AverageTemperatureUncertainty), x = ~ tab2_extract_data_countryB$dt, y = ~ tab2_extract_data_countryB$AverageTemperatureUncertainty, name = reactive({
+        paste(input$tab2_countryB, "Temperature Uncertainity", sep = " - ")
+      })(), type = "scatter") %>%
       layout(title = layout_title(), xaxis = x, yaxis = y, margin = 220)
   })
-  
+
   # Tab 3 Processings
   output$tab3_plot_area <- renderPlotly({
     tab3_extract_data <- isolate(subset(countries_data, countries_data$Country == input$tab3_countries))

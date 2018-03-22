@@ -26,3 +26,7 @@
   * Ability to zoom in/out of the plot
   * Ability to interact directly with the plot with a mouse 
   * Visualization technologies used - [Plotly](https://plot.ly/)
+  
+* `bonus.R` is a shiny application which has all features/functionalities exsisting in `main.R`. Addition to those some bonus features are included which are listed below.
+  * Visualizing temperature uncertainty on the same graph [Tab 1]
+  * Visualizing temperature uncertainty on the same graph [Tab 2]

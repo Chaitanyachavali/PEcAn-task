@@ -33,8 +33,8 @@ ui <- fluidPage(
       sidebarLayout(
         sidebarPanel(
           selectInput("tab1_countries", "Countries:",
-                      choices = countries,
-                      selected = "India"
+            choices = countries,
+            selected = "India"
           ),
           hr(),
           helpText("Please select a country from the dropdown.")
@@ -50,12 +50,12 @@ ui <- fluidPage(
       title = "Two countries (Scatter Plot)",
       sidebarPanel(
         selectInput("tab2_countryA", "Countries A:",
-                    choices = countries,
-                    selected = "India"
+          choices = countries,
+          selected = "India"
         ),
         selectInput("tab2_countryB", "Countries B:",
-                    choices = countries,
-                    selected = "Africa"
+          choices = countries,
+          selected = "Africa"
         ),
         hr(),
         helpText("Please select two countries from the dropdown")
@@ -70,8 +70,8 @@ ui <- fluidPage(
       sidebarLayout(
         sidebarPanel(
           selectInput("tab3_countries", "Countries:",
-                      choices = countries,
-                      selected = "India"
+            choices = countries,
+            selected = "India"
           ),
           hr(),
           helpText("Please select a country from the dropdown.")
@@ -120,7 +120,7 @@ server <- function(input, output) {
     plot_ly(data_frame, x = ~ date, y = ~ avg_temperature, type = "scatter", mode = "lines") %>%
       layout(title = input$tab1_countries, xaxis = x, yaxis = y, margin = 220)
   })
-  
+
   # Tab 2 processings
   # Extract 2 countries data
   layout_title <- reactive({
@@ -133,7 +133,7 @@ server <- function(input, output) {
     plot_ly(data = tab2_extract_data, x = ~ dt, y = ~ AverageTemperature, color = ~ Country, type = "scatter", colors = "Set2") %>%
       layout(title = layout_title(), xaxis = x, yaxis = y, margin = 220)
   })
-  
+
   # Tab 3 Processings
   output$tab3_plot_area <- renderPlotly({
     tab3_extract_data <- isolate(subset(countries_data, countries_data$Country == input$tab3_countries))
