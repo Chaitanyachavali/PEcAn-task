@@ -37,3 +37,4 @@
   * `d3js.html` is a simple web page to visualize various sample distributions using D3.js which gets data from R API
   * `RwithDS.pdf` is a pdf file generated from `server.R`
   * `shiny_app.pdf` is a pdf file generated from `shiny_app.R`
+* `task.txt` Deatils of the task (reason of this repo)
