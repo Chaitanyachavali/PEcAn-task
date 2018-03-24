@@ -1,0 +1,29 @@
+Create a web-based interactive visualization app of the Earth Surface Temperature Data from Berkeley Earth (https://www.kaggle.com/berkeleyearth/climate-change-earth-surface-temperature-data) in RShiny (https://shiny.rstudio.com/). Your app should include, at a minimum, a separate tab for each of the following:
+- A line plot of temperate by country, selecting the country from a drop-down menu.
+- BONUS: Visualize temperature uncertainty on the same graph
+- BONUS: The option to apply a moving window average or other smoothing algorithm to the data. Extra points if the algorithm's parameters can be customized by the user via sliders and/or drop-down menus
+- A bivariate scatter plot of temperatures for two different countries, selected from a drop-down menu by the user
+- BONUS: Visualize temperature uncertainties on the same graph
+- BONUS: Fit a linear regression through the data. Extra points for additional, related analyses (e.g. correlation coefficient, major axis regression), especially if they can be customized interactively in the app.
+- A bar chart of average temperature by country, averaged across the entire time series
+- BONUS: Ability to customize the window for the temporal average
+- BONUS: Ability to change the direction of sorting in the bar plot
+
+The following are not required, but could help make your app stand out:
+- Make the same plots by city as well
+- Color cities by country, and/or countries by continent (this may require you to obtain additional data from other sources -- if you do so, either include the data in your repository, or better yet, provide a script for downloading it)
+- Ability to zoom in/out of the plot, leaving the underlying data unchanged
+- More generally, ability to interact directly with the plot with a mouse 
+- Use of any of the following enhanced interactive visualization technologies: htmlwidgets (http://www.htmlwidgets.org/), plotly (https://plot.ly/), ggvis (http://ggvis.rstudio.com/)
+- Anything else you would like to include that will make your app really Shine!
+
+We will evaluate the app based on the following criteria:
+- Presence of the 3 tabs described above. Failure to include all of these components will disqualify your application.
+- Code quality. Your code should be neatly formatted and clearly structured. Do not repeat yourself -- common tasks should be re-factored into functions stored in their own file. Well-written code is self-documenting; comments should only be used to document "why" (not "how") and then only when it is not obvious! Make sure your code follows all of the stylistic recommendations of the Tidyverse style guide (http://style.tidyverse.org/). You should also consider the recommendations of the RStudio Shiny Articles (https://shiny.rstudio.com/articles/), particularly those in the "Improve" section.
+- Stability of the app. Clever use of reactive statements and caching should be used to limit unnecessary computation. Where particularly computationally demanding tasks are required, bonus points will be given for efficient use of CPU and memory (but remember Donald Knuth's quote, "premature optimization is the root of all evil"). The user should be able to toggle any interactive features that may significantly slow down the app (e.g. ggplotly vs. ggplot).
+- Aesthetic quality. All text should be proof-read for spelling and basic grammar. Fonts should be large enough to be readable. All axes should be labeled, including properly formatted units where appropriate. Axis text and labels should not overlap. Color schemes should be appropriate to the task (sequential vs. divergent vs. categorical), and should strive to be colorblind-friendly where possible.
+- Data science and visualization instincts. Interesting and appropriate visualizations and/or statistical analyses beyond the ones mentioned here will be rewarded. Outstanding candidates are those who not only write good code but can think critically about data analysis and visualization.
+
+Maintain this project using Git and host it as an open repository on GitHub. Below, please include the full link to the GitHub repository. Your GitHub repository MUST include a README file in the root directory which contains a concise description of your app and instructions for installing and running it. Although not required, we recommend that you create a minimal website demonstrating your app using GitHub's free GitHub pages service (https://pages.github.com/).
+
+
