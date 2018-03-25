@@ -1,6 +1,7 @@
 library(shiny)
 library(plotly)
 library(dplyr)
+library(plyr)
 
 # Reading the file
 raw_data <- read.delim("data/GlobalLandTemperaturesByCountry.csv", sep = ",")
