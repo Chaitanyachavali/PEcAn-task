@@ -1,5 +1,6 @@
 library(shiny)
 library(plotly)
+library(dplyr)
 
 # Reading the file
 raw_data <- read.delim("data/GlobalLandTemperaturesByCountry.csv", sep = ",")
@@ -95,20 +96,6 @@ server <- function(input, output) {
     size = 18,
     color = "#7f7f7f"
   )
-  x <- list(
-    title = "Date",
-    titlefont = custom_font,
-    tickangle = 50
-  )
-  y <- list(
-    title = "Average Temperature",
-    titlefont = custom_font
-  )
-  x_bar <- list(
-    title = "Count",
-    titlefont = custom_font,
-    tickangle = 90
-  )
   # Filling the space with plot using plotly
   output$tab1_plot_area <- renderPlotly({
     # Extracting selected country data from whole data
@@ -117,8 +104,17 @@ server <- function(input, output) {
     date <- tab1_extract_data$dt
     avg_temperature <- tab1_extract_data$AverageTemperature
     data_frame <- data.frame(date, avg_temperature)
+    x_tab1 <- list(
+      title = "Date",
+      titlefont = custom_font,
+      tickangle = 50
+    )
+    y_tab1 <- list(
+      title = "Average Temperature",
+      titlefont = custom_font
+    )
     plot_ly(data_frame, x = ~ date, y = ~ avg_temperature, type = "scatter", mode = "lines") %>%
-      layout(title = input$tab1_countries, xaxis = x, yaxis = y, margin = 220)
+      layout(title = input$tab1_countries, xaxis = x_tab1, yaxis = y_tab1, margin = 220)
   })
 
   # Tab 2 processings
@@ -127,18 +123,43 @@ server <- function(input, output) {
     paste(input$tab2_countryA, input$tab2_countryB, sep = " and ")
   })
   output$tab2_plot_area <- renderPlotly({
-    tab2_extract_data_countryA <- isolate(subset(countries_data, countries_data$Country == input$tab2_countryA))
-    tab2_extract_data_countryB <- isolate(subset(countries_data, countries_data$Country == input$tab2_countryB))
-    tab2_extract_data <- isolate(merge(tab2_extract_data_countryA, tab2_extract_data_countryB, all = TRUE))
-    plot_ly(data = tab2_extract_data, x = ~ dt, y = ~ AverageTemperature, color = ~ Country, type = "scatter", colors = "Set2") %>%
-      layout(title = layout_title(), xaxis = x, yaxis = y, margin = 220)
+    tab2_extract_data_countryA_raw <- isolate(subset(countries_data, countries_data$Country == input$tab2_countryA))
+    tab2_extract_data_countryB_raw <- isolate(subset(countries_data, countries_data$Country == input$tab2_countryB))
+    a_rows = nrow(tab2_extract_data_countryA_raw)
+    b_rows = nrow(tab2_extract_data_countryB_raw)
+    if(a_rows > b_rows) {
+      tab2_extract_data_countryA <- isolate(sample_n(tab2_extract_data_countryA, b_rows, replace = FALSE))
+    } else {
+      tab2_extract_data_countryB = isolate(sample_n(tab2_extract_data_countryB, a_rows, replace = FALSE))
+    }
+    x_tab2 <- list(
+      title = input$tab2_countryA,
+      titlefont = custom_font
+    )
+    y_tab2 <- list(
+      title = input$tab2_countryB,
+      titlefont = custom_font
+    )
+    plot_ly(data.frame(tab2_extract_data_countryA$AverageTemperature, tab2_extract_data_countryB$AverageTemperature), x = ~ tab2_extract_data_countryA$AverageTemperature, y = ~ tab2_extract_data_countryB$AverageTemperature, name = reactive({
+      paste(input$tab2_countryA, input$tab2_countryB, sep = " - ")
+    })(), type = "scatter") %>%
+      layout(title = layout_title(), xaxis = x_tab2, yaxis = y_tab2, margin = 220)
   })
 
   # Tab 3 Processings
   output$tab3_plot_area <- renderPlotly({
     tab3_extract_data <- isolate(subset(countries_data, countries_data$Country == input$tab3_countries))
+    x_tab3 <- list(
+      title = "Count",
+      titlefont = custom_font,
+      tickangle = 90
+    )
+    y_tab3 <- list(
+      title = "Average Temperature",
+      titlefont = custom_font
+    )
     plot_ly(y = ~ tab3_extract_data$AverageTemperature, type = "bar") %>%
-      layout(title = input$tab3_countries, xaxis = x_bar, yaxis = y, margin = 220)
+      layout(title = input$tab3_countries, xaxis = x_tab3, yaxis = y_tab3, margin = 220)
   })
 }
 
