@@ -68,18 +68,8 @@ ui <- fluidPage(
     # Tab 3
     tabPanel(
       title = "Average Temperature (Bar Chart)",
-      sidebarLayout(
-        sidebarPanel(
-          selectInput("tab3_countries", "Countries:",
-            choices = countries,
-            selected = "India"
-          ),
-          hr(),
-          helpText("Please select a country from the dropdown.")
-        ),
-        mainPanel(
-          plotlyOutput("tab3_plot_area")
-        )
+      mainPanel(
+        plotlyOutput("tab3_plot_area")
       )
     )
   )
@@ -125,12 +115,14 @@ server <- function(input, output) {
   output$tab2_plot_area <- renderPlotly({
     tab2_extract_data_countryA_raw <- isolate(subset(countries_data, countries_data$Country == input$tab2_countryA))
     tab2_extract_data_countryB_raw <- isolate(subset(countries_data, countries_data$Country == input$tab2_countryB))
-    a_rows = nrow(tab2_extract_data_countryA_raw)
-    b_rows = nrow(tab2_extract_data_countryB_raw)
-    if(a_rows > b_rows) {
-      tab2_extract_data_countryA <- isolate(sample_n(tab2_extract_data_countryA, b_rows, replace = FALSE))
+    a_rows <- nrow(tab2_extract_data_countryA_raw)
+    b_rows <- nrow(tab2_extract_data_countryB_raw)
+    if (a_rows > b_rows) {
+      tab2_extract_data_countryA <- isolate(sample_n(tab2_extract_data_countryA_raw, b_rows, replace = FALSE))
+      tab2_extract_data_countryB <- tab2_extract_data_countryB_raw
     } else {
-      tab2_extract_data_countryB = isolate(sample_n(tab2_extract_data_countryB, a_rows, replace = FALSE))
+      tab2_extract_data_countryA <- tab2_extract_data_countryA_raw
+      tab2_extract_data_countryB <- isolate(sample_n(tab2_extract_data_countryB_raw, a_rows, replace = FALSE))
     }
     x_tab2 <- list(
       title = input$tab2_countryA,
@@ -148,18 +140,18 @@ server <- function(input, output) {
 
   # Tab 3 Processings
   output$tab3_plot_area <- renderPlotly({
-    tab3_extract_data <- isolate(subset(countries_data, countries_data$Country == input$tab3_countries))
+    plot_data <- isolate(ddply(countries_data, ~ Country, summarise, avg_temperature = mean(unique(AverageTemperature))))
     x_tab3 <- list(
-      title = "Count",
+      title = "Countries",
       titlefont = custom_font,
-      tickangle = 90
+      tickangle = 40
     )
     y_tab3 <- list(
       title = "Average Temperature",
       titlefont = custom_font
     )
-    plot_ly(y = ~ tab3_extract_data$AverageTemperature, type = "bar") %>%
-      layout(title = input$tab3_countries, xaxis = x_tab3, yaxis = y_tab3, margin = 220)
+    plot_ly(x = ~ plot_data$Country, y = ~ plot_data$avg_temperature, type = "bar") %>%
+      layout(title = "Averaged across time series", xaxis = x_tab3, yaxis = y_tab3, margin = 220)
   })
 }
 
