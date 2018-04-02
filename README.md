@@ -27,11 +27,6 @@
   * Ability to interact directly with the plot with a mouse 
   * Visualization technologies used - [Plotly](https://plot.ly/)
 
-[//]: # (
-* `bonus.R` is a shiny application which has all features/functionalities exsisting in `main.R`. Addition to those some bonus features are included which are listed below [WIP].
-  * Visualizing temperature uncertainty on the same graph [Tab 1]
-)
-
 * `prev_work` consists files which were developed before starting actual technical task [This can be completely ignored].
   * `shiny_app.R` is a shiny application to visualize various sample distributions
   * `server.R` creates a API endpoint
