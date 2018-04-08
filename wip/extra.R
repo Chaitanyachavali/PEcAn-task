@@ -94,6 +94,21 @@ server <- function(input, output) {
     avg_plot_year <- ggplot(avg_temp_by_year, aes(x = avg_temp_by_year$dt, y = avg_temp_by_year$AverageTemperature)) + geom_point() + ggtitle(by_year_layout_title()) + labs(x = "Year", y = "Average Temperature")
     avg_plot_year <- ggplotly()
   })
+  by_month_layout_title <- reactive({
+    paste("Average Temperatures by Month", input$tab2_country, sep = " - ")
+  })
+  output$tab22_plot_area <- renderPlotly({
+    tab2_extract_data <- isolate(subset(countries_data, countries_data$Country == input$tab2_country))
+    avg_temp_by_month = select(tab2_extract_data, dt, AverageTemperature)
+    avg_temp_by_month$dt= as.Date(avg_temp_by_month$dt)
+    avg_temp_by_month = mutate(avg_temp_by_month, month = format(avg_temp_by_month$dt, format = '%m'), year = format(avg_temp_by_month$dt, format = '%Y'))
+    avg_temp_by_month$month = as.factor(avg_temp_by_month$month)
+    avg_temp_by_month$year = as.numeric(avg_temp_by_month$year)
+    str(avg_temp_by_month)
+    avg_temp_by_month = select(avg_temp_by_month, AverageTemperature, month, year)
+    avg_plot_month <- ggplot(avg_temp_by_month, aes(x = month, y = AverageTemperature)) + geom_jitter(aes(colour = year)) + ggtitle(by_month_layout_title()) + labs(x = "Month", y = "Average Temperature") 
+    avg_plot_month <- ggplotly()
+  })
 }
 
 # Get going
