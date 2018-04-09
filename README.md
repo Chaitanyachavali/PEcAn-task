@@ -26,6 +26,10 @@
   * Ability to zoom in/out of the plot
   * Ability to interact directly with the plot with a mouse 
   * Visualization technologies used - [Plotly](https://plot.ly/)
+* `wip/extra.R` is a shiny application which has some visualizations apart from task. Features/functionalities covered in `wip/extra.R` are listed below
+  * A breif description about the dataset and also by country [Tab 1]
+  * Temperature changes by country (Changes by year, month and variability) [Tab 2]
+  * Time series and forecastings [Tab 3]
 
 * `prev_work` consists files which were developed before starting actual technical task [This can be completely ignored].
   * `shiny_app.R` is a shiny application to visualize various sample distributions
