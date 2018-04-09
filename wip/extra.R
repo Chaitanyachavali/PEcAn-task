@@ -152,8 +152,8 @@ server <- function(input, output) {
     avg_plot_month <- ggplot(avg_temp_by_month, aes(x = month, y = AverageTemperature)) + geom_jitter(aes(colour = year)) + ggtitle(by_month_layout_title()) + labs(x = "Month", y = "Average Temperature") 
     avg_plot_month <- ggplotly()
   })
-  by_month_layout_title <- reactive({
-    paste("Temprature Variability", input$tab2_country, sep = " - ")
+  by_var_layout_title <- reactive({
+    paste("Temperature Variability", input$tab2_country, sep = " - ")
   })
   output$tab23_plot_area <- renderPlotly({
     tab2_extract_data <- isolate(subset(countries_data, countries_data$Country == input$tab2_country))
@@ -162,7 +162,7 @@ server <- function(input, output) {
     temperature_uncer = mutate(temperature_uncer, month = format(temperature_uncer$dt, '%m'), year = format(temperature_uncer$dt, '%Y'))
     temperature_uncer = select(temperature_uncer, AverageTemperatureUncertainty, month, year)
     temperature_uncer$year = as.numeric(temperature_uncer$year)
-    temperature_uncer_plot <- ggplot(temperature_uncer, aes(x = month, y = AverageTemperatureUncertainty)) + geom_jitter(aes(colour = year)) +  ggtitle(by_month_layout_title()) + labs(x = "Month", y = "Temperature Variability") 
+    temperature_uncer_plot <- ggplot(temperature_uncer, aes(x = month, y = AverageTemperatureUncertainty)) + geom_jitter(aes(colour = year)) +  ggtitle(by_var_layout_title()) + labs(x = "Month", y = "Temperature Variability") 
     temperature_uncer_plot <- ggplotly()
   })
   # Plotting the data
