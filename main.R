@@ -26,6 +26,9 @@ countries <- unique(countries_data$Country)
 ui <- fluidPage(
   # Give the page a title
   titlePanel("Temperature Visualizations"),
+  tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
+  ),
   # Creating Tabs
   tabsetPanel(
     # Tab 1
@@ -43,7 +46,23 @@ ui <- fluidPage(
         ),
         mainPanel(
           # Chart Area
-          plotlyOutput("tab1_plot_area")
+          div(id = "plot-container",
+              div(class = "plotlybars-wrapper",
+                    div( class="plotlybars",
+                           div(class="plotlybars-bar b1"),
+                            div(class="plotlybars-bar b2"),
+                            div(class="plotlybars-bar b3"),
+                            div(class="plotlybars-bar b4"),
+                            div(class="plotlybars-bar b5"),
+                            div(class="plotlybars-bar b6"),
+                            div(class="plotlybars-bar b7")
+                    ),
+                     div(class="plotlybars-text",
+                           p("Updating the plot. Hold tight!")
+                    )
+              ),
+               plotlyOutput("tab1_plot_area")
+          )
         )
       )
     ),
@@ -63,14 +82,46 @@ ui <- fluidPage(
         helpText("Please select two countries from the dropdown")
       ),
       mainPanel(
-        plotlyOutput("tab2_plot_area")
+        div(id = "plot-container"
+            , div(class = "plotlybars-wrapper"
+                  , div( class="plotlybars"
+                         , div(class="plotlybars-bar b1")
+                         , div(class="plotlybars-bar b2")
+                         , div(class="plotlybars-bar b3")
+                         , div(class="plotlybars-bar b4")
+                         , div(class="plotlybars-bar b5")
+                         , div(class="plotlybars-bar b6")
+                         , div(class="plotlybars-bar b7")
+                  )
+                  , div(class="plotlybars-text"
+                        , p("loading")
+                  )
+            )
+            , plotlyOutput("tab2_plot_area")
+        )
       )
     ),
     # Tab 3
     tabPanel(
       title = "Average Temperature (Bar Chart)",
       mainPanel(
-        plotlyOutput("tab3_plot_area")
+        div(id = "plot-container"
+            , div(class = "plotlybars-wrapper"
+                  , div( class="plotlybars"
+                         , div(class="plotlybars-bar b1")
+                         , div(class="plotlybars-bar b2")
+                         , div(class="plotlybars-bar b3")
+                         , div(class="plotlybars-bar b4")
+                         , div(class="plotlybars-bar b5")
+                         , div(class="plotlybars-bar b6")
+                         , div(class="plotlybars-bar b7")
+                  )
+                  , div(class="plotlybars-text"
+                        , p("loading")
+                  )
+            )
+            , plotlyOutput("tab3_plot_area")
+        )
       )
     )
   )
@@ -94,6 +145,7 @@ server <- function(input, output) {
     # We only need two columns from it
     date <- tab1_extract_data$dt
     avg_temperature <- tab1_extract_data$AverageTemperature
+    Sys.sleep(3)
     data_frame <- data.frame(date, avg_temperature)
     x_tab1 <- list(
       title = "Date",
@@ -105,7 +157,7 @@ server <- function(input, output) {
       titlefont = custom_font
     )
     plot_ly(data_frame, x = ~ date, y = ~ avg_temperature, type = "scatter", mode = "lines") %>%
-      layout(title = input$tab1_countries, xaxis = x_tab1, yaxis = y_tab1, margin = 220)
+    layout(title = input$tab1_countries, xaxis = x_tab1, yaxis = y_tab1, margin = 220)
   })
 
   # Tab 2 processings
@@ -133,6 +185,7 @@ server <- function(input, output) {
       title = input$tab2_countryB,
       titlefont = custom_font
     )
+    Sys.sleep(3)
     plot_ly(data.frame(tab2_extract_data_countryA$AverageTemperature, tab2_extract_data_countryB$AverageTemperature), x = ~ tab2_extract_data_countryA$AverageTemperature, y = ~ tab2_extract_data_countryB$AverageTemperature, name = reactive({
       paste(input$tab2_countryA, input$tab2_countryB, sep = " - ")
     })(), type = "scatter") %>%

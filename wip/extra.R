@@ -191,7 +191,7 @@ server <- function(input, output) {
     tab3_extract_data <- isolate(subset(countries_data, countries_data$Country == input$tab3_country))
     tab3_extract_data$dt = as.Date(tab3_extract_data$dt)
     tab3_extract_data=ts(tab3_extract_data$AverageTemperature,frequency = 12)
-    adf.test(data_india,alternative = "stationary")
+    adf.test(tab3_extract_data,alternative = "stationary")
   })
   # ACF plot
   output$tab35_plot_area <- renderPlot({
@@ -205,7 +205,7 @@ server <- function(input, output) {
     tab3_extract_data <- isolate(subset(countries_data, countries_data$Country == input$tab3_country))
     tab3_extract_data$dt = as.Date(tab3_extract_data$dt)
     tab3_extract_data=ts(tab3_extract_data$AverageTemperature,frequency = 12)
-    pacf(data_india,lag.max=20)
+    pacf(tab3_extract_data,lag.max=20)
   })
   # fitting an arima model
   output$tab3_arima_model <- renderPrint({
