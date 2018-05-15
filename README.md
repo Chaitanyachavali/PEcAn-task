@@ -25,6 +25,7 @@
   * A bar chart of average temperature by country, averaged across the entire time series [Tab 3]
   * Ability to zoom in/out of the plot
   * Ability to interact directly with the plot with a mouse 
+  * Preloaders (Lazy loading - A delay of 3 seconds is given before loading the graph to show the preloader)
   * Visualization technologies used - [Plotly](https://plot.ly/)
 * `wip/extra.R` is a shiny application which has some visualizations apart from task. Features/functionalities covered in `wip/extra.R` are listed below
   * A breif description about the dataset and also by country [Tab 1]
